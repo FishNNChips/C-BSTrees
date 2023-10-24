@@ -1,16 +1,13 @@
 #ifndef TREE_H
 #define TREE_H
-
 template <typename T>
 class Tree
 {
+    static_assert(std::integral<T> || std::floating_point<T>, "Template Parameter must be Numeric!!!\n");
+
 public:
-    class NODE
-    {
-        NODE *left, *right;
-        T value;
-        NODE() : left(nullptr), right(nullptr), value(0){};
-    };
+    using Tree_iterator = NODE<T> *;
+    Tree_iterator root;
 };
 
 #endif

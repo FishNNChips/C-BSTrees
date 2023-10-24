@@ -1,11 +1,6 @@
 #ifndef RB_TREE_H // include guard
 #define RB_TREE_H
 
-#include <bits/stdc++.h>
-#include "Tree.h"
-template <typename T>
-class Rb_Tree;
-
 template <typename T>
 decltype(Rb_Tree<T>::root) inorder_successor(Rb_Tree<T> &t, T value)
 {
@@ -33,20 +28,10 @@ template <typename T>
 decltype(Rb_Tree<T>::root) inorder_predecessor(Rb_Tree<T> &&t, T value) { return inorder_predecessor<T>(t, value); }
 
 template <typename T>
-class Rb_Tree:public Tree<T>
+class Rb_Tree : public Tree<T>
 {
     static_assert(std::integral<T> || std::floating_point<T>, "Template Parameter must be Numeric!!!\n");
 
-private:
-    class NODE
-    {
-    public:
-        NODE(T num, NODE *p) : value(num), left(nullptr), right(nullptr), color(Rb_Tree<T>::RED), parent(p){};
-        NODE(NODE *obj) : value(obj->value), left(obj->left), right(obj->right), parent(obj->parent), color(obj->color){};
-        T value;
-        unsigned short int color : 1;
-        NODE *left, *right, *parent;
-    };
     // std::stack<bool> prefix_code;
 
 public:
@@ -55,8 +40,8 @@ public:
     static constexpr short BLACK = 1;
     static constexpr short DOUBLE_BLACK = 2;
 
-    using Rb_Tree_iterator = NODE *;
-    using Node = NODE;
+    using Rb_Tree_iterator = Rb_Tree_NODE<T> *;
+    using Node = Rb_Tree_NODE<T>;
 
     Rb_Tree_iterator root;
 
@@ -113,7 +98,7 @@ public:
             {
                 if (!it->left)
                 {
-                    it->left = new NODE(value, it);
+                    it->left = new Rb_Tree_NODE<T>(value, it);
                     newnode = it->left;
                     break;
                 }
@@ -124,7 +109,7 @@ public:
             {
                 if (!it->right)
                 {
-                    it->right = new NODE(value, it);
+                    it->right = new Rb_Tree_NODE<T>(value, it);
                     newnode = it->right;
                     break;
                 }
@@ -289,19 +274,21 @@ private: // implementation methods.
     void deletefixup(Rb_Tree_iterator &p);
     void L_rotation(Rb_Tree_iterator p);
     void R_rotation(Rb_Tree_iterator p);
-    inline void in_predecessor(Rb_Tree_iterator &node)
+    Rb_Tree_iterator in_predecessor(Rb_Tree_iterator node)
     {
         if (node->left)
             node = node->left;
         while (node && node->right)
             node = node->right;
+        return node;
     }
-    inline void in_successor(Rb_Tree_iterator &node)
+    Rb_Tree_iterator in_successor(Rb_Tree_iterator node)
     {
         if (node->right)
             node = node->right;
         while (node && node->left)
             node = node->left;
+        return node;
     }
 };
 

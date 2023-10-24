@@ -1,4 +1,4 @@
-#include "Rb_Tree.h"
+#include "Master.h"
 using namespace std;
 chrono::steady_clock::time_point start, end;
 void print()
@@ -19,6 +19,7 @@ int main()
     //      << inorder_predecessor(move(obj), 16)->value << '\n';
     // atexit(print);
     // obj.inorder_traversal(obj.root);
+    // Tree<int>o1=Rb_Tree<int>(1);
 }
 
 /*
